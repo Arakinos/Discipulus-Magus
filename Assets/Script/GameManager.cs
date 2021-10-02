@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject jaugeGO;
     public Jauge jaugeScript;
     public int tempsApparitionInstability;
+    public bool enPause;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
         timer = 0;
         numInstability = 0;
         tempsApparitionInstability = 0;
+        enPause = false;
     }
 
     // Update is called once per frame
@@ -26,14 +28,18 @@ public class GameManager : MonoBehaviour
 
         if (numInstability != 0)
         {
-            jaugeScript.stabilityGauge -= 1;
-            jaugeScript.UpdateHealth();
+            if (enPause == false)
+            {
+                jaugeScript.stabilityGauge -= 1;
+                jaugeScript.UpdateHealth();
+            }
         }
         else
         {
             if (tempsApparitionInstability < 1000)
             {
-                tempsApparitionInstability += 1;
+                if(enPause == false)
+                    tempsApparitionInstability += 1;
             }
             else
             {

@@ -5,10 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class PauseManager : MonoBehaviour
 {
+    public GameObject gameManagerGo;
+    public GameManager gameManagerScript;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gameManagerGo = GameObject.Find("GameManager");
+        gameManagerScript = gameManagerGo.GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -19,6 +23,7 @@ public class PauseManager : MonoBehaviour
 
     public void OnClickContinue()
     {
+        gameManagerScript.enPause = false;
         Destroy(this.gameObject);
     }
 
