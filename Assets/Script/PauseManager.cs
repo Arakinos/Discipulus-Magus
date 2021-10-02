@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuManager : MonoBehaviour
+public class PauseManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -17,18 +17,14 @@ public class MenuManager : MonoBehaviour
         
     }
 
-    public void OnClickPlay()
+    public void OnClickContinue()
     {
-        SceneManager.LoadScene("Jeu");
+        Destroy(this.gameObject);
     }
 
-    public void OnClickQuit()
+    public void OnClickMainMenu()
     {
-       Application.Quit();
+        SceneManager.LoadScene("Menu");
     }
 
-    public void OnClickOption()
-    {
-        
-    }
 }
