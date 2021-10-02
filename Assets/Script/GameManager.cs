@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     public int tempsApparitionInstability;
     public bool enPause;
 
+    public GameObject sortGO;
+    public SpriteRenderer couleurSort;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +22,8 @@ public class GameManager : MonoBehaviour
         numInstability = 0;
         tempsApparitionInstability = 0;
         enPause = false;
+
+        couleurSort = sortGO.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -47,6 +52,25 @@ public class GameManager : MonoBehaviour
                 tempsApparitionInstability = 0;
             }
         }
+
+        #region Instabilitées du sort
+
+        if (numInstability == 0)
+            couleurSort.color = new Color(255, 255, 255, 255);
+        if (numInstability == 1)
+            couleurSort.color = new Color(255, 0, 0, 255);
+        if (numInstability == 2)
+            couleurSort.color = new Color(0, 0, 255, 255);
+        if (numInstability == 3)
+            couleurSort.color = new Color(0, 255, 0, 255);
+        if (numInstability == 4)
+            couleurSort.color = new Color(255, 255, 0, 255);
+        if (numInstability == 5)
+            couleurSort.color = new Color(155, 0, 255, 255);
+        if (numInstability == 6)
+            couleurSort.color = new Color(0, 0, 0, 255);
+
+        #endregion
 
         if (jaugeScript.stabilityGauge == 0)
         {
