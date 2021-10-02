@@ -11,6 +11,10 @@ public class DrawRectangle : MonoBehaviour
     List<Vector3> pointsList = new List<Vector3>();
     private Vector3 MousePosition;
     public Material Alpha;
+    Ray ray;
+    RaycastHit hit;
+    int AllIsGood = 0;
+    int AllIsNotGood = 0;
     private void Awake()
     {
         line = gameObject.AddComponent<LineRenderer>();
@@ -22,28 +26,8 @@ public class DrawRectangle : MonoBehaviour
         line.endColor = Color.green;
     }
     
-    public void Compare()
-    {
-        //Vector3[] Buffer1 = Reduce(pointsList).ToArray() ;
-        //Vector3[] Buffer2 = DataManager.MagicCircleDataBase["1"].ToArray();
-        //Array.Resize(ref Buffer1, line.positionCount);
-        //Array.Resize(ref Buffer2, DataManager.MagicCircleDataBaseLineRenderer["1"].positionCount);
-
-        //Debug.Log(line.GetPositions(Buffer1));
-        //DataManager.MagicCircleDataBaseLineRenderer["1"].GetPositions(Buffer2);
-
-        //float diff = DifferenceBetweenLines(Buffer1, Buffer2);
-        //const float threshold = 5f;
-
-        //Debug.Log(diff < threshold ? "Pretty close!" : "Not that close...");
-    }
-    void Start()
-    {
-
-    }
     private void Update()
     {
-        
         Draw();
     }
     private void Draw()
@@ -55,44 +39,104 @@ public class DrawRectangle : MonoBehaviour
         if(Input.GetMouseButtonUp(0))
         {
             IsPlayerDrawing = false;
-            Compare();
-            AttachCollider(line);
-            Debug.Log(IsGood(pointsList, DataManager.MagicCircleDataBaseLineRenderer["1"].gameObject,line));
+            try
+            {
+                float diff = 500;
+                if (IsGood(AllIsNotGood, AllIsGood))
+                {
+                    diff = DifferenceBetweenLines(pointsList.ToArray(), DataManager.paternDic[DataManager.currentPatern].Alpha.ToArray());
+                }
+                const float threshold = 0.5f;
+
+                Debug.Log(diff < threshold ? "Pretty close!" : "Not that close...");
+            }
+            catch
+            {
+                Debug.Log("Not that close...");
+            }
+            AllIsNotGood = 0;
+            AllIsGood = 0;
             line.positionCount = 0;
             pointsList.Clear();   
         }
-        if(IsPlayerDrawing)
+        if (IsPlayerDrawing)
         {
-            MousePosition = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y,0);
-            
-            pointsList.Add(MousePosition);
-            line.positionCount = pointsList.Count;
-            line.SetPosition(pointsList.Count - 1, (Vector3)pointsList[pointsList.Count - 1]);
+
+            MousePosition = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0);
+
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (line.positionCount <= 0)
+            {
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.name.Equals(DataManager.gm.name))
+                    {
+                        AllIsGood++;
+                    }
+                    else
+                    {
+                        AllIsNotGood++;
+                    }
+                }
+                else
+                {
+                    AllIsNotGood++;
+                }
+                pointsList.Add(MousePosition);
+                line.positionCount = pointsList.Count;
+                line.SetPosition(pointsList.Count - 1, (Vector3)pointsList[pointsList.Count - 1]);
+            }
+            else if (line.positionCount > 0 && pointsList[pointsList.Count-1] != MousePosition)
+            {
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.name.Equals(DataManager.gm.name))
+                    {
+                        AllIsGood++;
+                    }
+                    else
+                    {
+                        AllIsNotGood++;
+                    }
+                }
+                else
+                {
+                    AllIsNotGood++;
+                }
+                pointsList.Add(MousePosition);
+                line.positionCount = pointsList.Count;
+                line.SetPosition(pointsList.Count - 1, (Vector3)pointsList[pointsList.Count - 1]);
+            }
+
         }
     }
-    /*List<Vector3> Reduce(List<Vector3> input)
-    {
-        // TODO fix nbPoints sometimes fails
-        List<Vector3> output = new List<Vector3>();
-        int step = Mathf.FloorToInt(input.Count / (DataManager.MagicCircleDataBase["1"].Count+1));
-        float scale = 1;
-        for (int i = 0; i < input.Count && output.Count < DataManager.MagicCircleDataBase["1"].Count; i += step)
-        {
-            Vector3 position = input[i] - input[0];
-            scale = Mathf.Max(position.magnitude, scale);
-            Debug.Log(position);
-            output.Add(position);
-        }
-        for (int i = 0; i < output.Count; i++)
-            output[i] = Vector3.ClampMagnitude(output[i], output[i].magnitude / scale);
-        return output;
-    }*/
 
-    List<Vector3> ReducePointList(List<Vector3> basicList)
+    private bool IsGood(int isnotgood, int isgood)
     {
-        List<Vector3> OutputList = new List<Vector3>();
-        
-        return OutputList;
+        float tempo = isnotgood + isgood;
+        if (tempo < 100)
+        {
+            Debug.Log(AllIsGood + " < " + tempo * 80);
+            Debug.Log("false");
+            return false;
+        }
+        tempo = tempo / 100;
+        if (AllIsGood > (tempo * 90))
+        {
+            Debug.Log(AllIsGood + " > " + tempo * 80);
+            Debug.Log(true);
+            float diff = DifferenceBetweenLines(pointsList.ToArray(), DataManager.paternDic[DataManager.currentPatern].Alpha.ToArray());
+            const float threshold = 5f;
+
+            Debug.Log(diff < threshold ? "Pretty close!" : "Not that close...");
+            return true;
+        }
+        else
+        {
+            Debug.Log(AllIsGood + " < " + tempo * 80);
+            Debug.Log("false");
+            return false;
+        }
     }
     float DifferenceBetweenLines(Vector3[] drawn, Vector3[] toMatch)
     {
@@ -126,7 +170,7 @@ public class DrawRectangle : MonoBehaviour
 
             while (lineEnum.MoveNext())
             {
-                //Debug.Log(lineEnum.Current);
+                Debug.Log(lineEnum.Current);
                 var target = lineEnum.Current;
                 while (pos != target)
                 {
@@ -138,8 +182,9 @@ public class DrawRectangle : MonoBehaviour
 
     static float SqrDistanceToLine(Vector3[] line, Vector3 point)
     {
-        return ListSegments(line).Select(seg => SqrDistanceToSegment(seg.a, seg.b, point)).Min();
-        //return 0.0f;
+        return ListSegments(line)
+            .Select(seg => SqrDistanceToSegment(seg.a, seg.b, point))
+            .Min();
     }
 
     static float SqrDistanceToSegment(Vector3 linePoint1, Vector3 linePoint2, Vector3 point)
@@ -226,50 +271,5 @@ public class DrawRectangle : MonoBehaviour
                 return Vector3.zero;
         }
     }
-    void AttachCollider(LineRenderer lr)
-    {
-        var ec = gameObject.AddComponent<EdgeCollider2D>();
-        Vector3[] points = new Vector3[lr.positionCount];
-        lr.GetPositions(points);
-
-        Vector2[] pointsList = new Vector2[lr.positionCount];
-
-        for (int i = 0; i < lr.positionCount; i++)
-        {
-            pointsList[i] = ((Vector2)points[i]);
-        }
-
-        ec.points = pointsList;
-
-    }
-    private bool IsGood(List<Vector3> positions, GameObject gameObject, LineRenderer lr)
-    {
-        var m_Collider = gameObject.GetComponent<EdgeCollider2D>();
-        int AllIsGood = 0;
-        int AllIsNotGood = 0;
-        foreach (Vector3 position in positions)
-        {
-            if(m_Collider.bounds.Contains(position))
-            {
-                AllIsGood += 1;
-            }
-            else
-            {
-                Debug.Log(position);
-                AllIsNotGood += 1;
-            }
-        }
-        int tempo = AllIsGood + AllIsNotGood;
-        if(tempo<100)
-        {
-            return false;
-        }
-        tempo = tempo/100;
-        if (AllIsGood > (tempo * 90))
-        {
-            Debug.Log(AllIsGood + " > " + tempo * 80);
-            return true;
-        }
-        else Debug.Log(AllIsGood + " < " + tempo * 80); return false;
 }
-}
+
