@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public float timer;
+    public float timer, minutes, secondes;
+    public Text timerText;
     public int numInstability;  // 0 = Pas d'instabilité
     public GameObject jaugeGO;
     public Jauge jaugeScript;
@@ -13,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject sortGO;
     public SpriteRenderer couleurSort;
+
+    GameObject menuFin;
+    bool fin;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +28,23 @@ public class GameManager : MonoBehaviour
         tempsApparitionInstability = 0;
         enPause = false;
         couleurSort = sortGO.GetComponent<SpriteRenderer>();
+        fin = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
+        #region Timer
+
+        float secondes = Mathf.FloorToInt(timer % 60);
+        float minutes = Mathf.FloorToInt(timer / 60);
+
+        if (jaugeScript.stabilityGauge != 0)
+            timer += Time.deltaTime;
+
+        timerText.text = minutes.ToString() + " : " + secondes.ToString();
+
+        #endregion
 
         if (numInstability != 0)
         {
@@ -74,6 +90,12 @@ public class GameManager : MonoBehaviour
         if (jaugeScript.stabilityGauge == 0)
         {
             // Quand FIN du jeu 
+            if (fin == false)
+            {
+                menuFin = Instantiate(Resources.Load("Prefab/Menu_Fin")) as GameObject;
+                menuFin.transform.SetParent(GameObject.Find("Canvas").transform, false);
+                fin = true;
+            }
         }
     }
 
