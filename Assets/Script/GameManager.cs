@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
         numInstability = 0;
         tempsApparitionInstability = 0;
         enPause = false;
-
         couleurSort = sortGO.GetComponent<SpriteRenderer>();
     }
 
@@ -80,6 +79,7 @@ public class GameManager : MonoBehaviour
 
     void ApparitionInstability()
     {
-        numInstability = Random.Range(1, 7);
+        numInstability = Random.Range(1, 4);
+        GameObject.Find("GameManager").GetComponent<DataManager>().ChangeCurrentPatern(numInstability.ToString());
     }
 }

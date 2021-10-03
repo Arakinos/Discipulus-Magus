@@ -28,7 +28,10 @@ public class DrawRectangle : MonoBehaviour
     
     private void Update()
     {
-        Draw();
+        if (DataManager.currentPatern != "0")
+        {
+            Draw();
+        }
     }
     private void Draw()
     {
@@ -46,9 +49,12 @@ public class DrawRectangle : MonoBehaviour
                 {
                     diff = DifferenceBetweenLines(pointsList.ToArray(), DataManager.paternDic[DataManager.currentPatern].Alpha.ToArray());
                 }
-                const float threshold = 0.5f;
-
-                Debug.Log(diff < threshold ? "Pretty close!" : "Not that close...");
+                const float threshold = 1f;
+                if(diff<threshold)
+                {
+                    GameObject.Find("GameManager").GetComponent<DataManager>().ChangeCurrentPatern("0");
+                    GameObject.Find("GameManager").GetComponent<GameManager>().numInstability = 0;
+                }
             }
             catch
             {
