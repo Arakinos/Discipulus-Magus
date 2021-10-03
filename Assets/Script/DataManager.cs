@@ -9,7 +9,9 @@ public class DataManager : MonoBehaviour
     public MeshCollider ec;
     public static GameObject gm;
     public static int MinimumLenght = 5000000;
-    public static string currentPatern;
+    public static string currentPatern = "0";
+    [SerializeField]
+    private Material Material;
     // Start is called before the first frame update
     public void Awake()
     {
@@ -19,7 +21,8 @@ public class DataManager : MonoBehaviour
         DataSet();
         PaternLr.startWidth = 0.8f;
         PaternLr.endWidth = 0.8f;
-        ChangeCurrentPatern("1");
+        PaternLr.material = Material;
+        //ChangeCurrentPatern("1");
 
     }
     void AttachCollider()
@@ -41,7 +44,7 @@ public class DataManager : MonoBehaviour
                 i++;
             }
         }
-        else
+        else if (PaternName != "0")
         {
             foreach (Vector3 vector in paternDic[PaternName].Alpha)
             {
@@ -49,6 +52,12 @@ public class DataManager : MonoBehaviour
                 PaternLr.SetPosition(i, vector);
                 i++;
             }
+        }
+        else 
+        {
+            PaternLr.positionCount = 0;
+            currentPatern = PaternName;
+            return;
         }
 
         MinimumLenght = paternDic[PaternName].minimumlenght;
