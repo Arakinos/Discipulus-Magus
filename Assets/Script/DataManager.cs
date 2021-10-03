@@ -38,7 +38,7 @@ public class DataManager : MonoBehaviour
     public void ChangeCurrentPatern(string PaternName)
     {
         int i = 0;
-        if (PaternName == "2" || PaternName == "5")
+        if (PaternName == "2" || PaternName == "5" || PaternName == "6")
         {
             PaternLr.numCornerVertices = 20;
             foreach (Vector3 vector in paternDic[PaternName].Alpha)
@@ -51,14 +51,17 @@ public class DataManager : MonoBehaviour
         }
         else if (PaternName != "0")
         {
-            PaternLr.numCornerVertices = 0;
-            foreach (Vector3 vector in paternDic[PaternName].Alpha)
-            {
 
-                PaternLr.positionCount = i + 1;
-                PaternLr.SetPosition(i, vector);
-                i++;
-            }
+            foreach (Vector3 vector in paternDic[PaternName].Alpha)
+                {
+
+                    PaternLr.positionCount = i + 1;
+                    PaternLr.SetPosition(i, vector);
+                    i++;
+                }
+
+            PaternLr.numCornerVertices = 0;
+
         }
         else 
         {
@@ -138,58 +141,26 @@ public class DataManager : MonoBehaviour
         Alpha5.minimumlenght = 800;
         paternDic.Add("5", Alpha5);
         #endregion
+        #region Alpha6
+        patern Alpha6 = new patern();
+        List<Vector3> AlphaF = new List<Vector3>();
+        AlphaF.Add(new Vector3(0, 4, 0));
+        AlphaF.Add(new Vector3(0, -1.5f, 0));
+        AlphaF.Add(new Vector3(-3, -1.5f, 0));
+        AlphaF.Add(new Vector3(-3, 2, 0));
+        AlphaF.Add(new Vector3(3, 2, 0));
+        AlphaF.Add(new Vector3(3, -4, 0));
+        AlphaF.Add(new Vector3(-3, -4, 0));
+        Alpha6.minimumlenght = 800;
+        Alpha6.Alpha = AlphaF;
+        paternDic.Add("6", Alpha6);
+        #endregion
     }
     public class patern
     {
         public List<Vector3> Alpha = new List<Vector3>();
         public int minimumlenght;
     }
-    Vector3[] Generate_Points(Vector3[] keyPoints, int segments = 100)
-    {
-        Vector3[] Points = new Vector3[(keyPoints.Length - 1) * segments + keyPoints.Length];
-        for (int i = 1; i < keyPoints.Length; i++)
-        {
-            Points[(i - 1) * segments + i - 1] = new Vector3(keyPoints[i - 1].x, keyPoints[i - 1].y, 0);
-            for (int j = 1; j <= segments; j++)
-            {
-                float x = keyPoints[i - 1].x;
-                float y = keyPoints[i - 1].y;
-                float z = 0;//keyPoints [i - 1].z;
-                float dx = (keyPoints[i].x - keyPoints[i - 1].x) / segments;
-                float dy = (keyPoints[i].y - keyPoints[i - 1].y) / segments;
-                Points[(i - 1) * segments + j + i - 1] = new Vector3(x + dx * j, y + dy * j, z);
-            }
-        }
-        Points[(keyPoints.Length - 1) * segments + keyPoints.Length - 1] = new Vector3(keyPoints[keyPoints.Length - 1].x, keyPoints[keyPoints.Length - 1].y, 0);
-        return Points;
-    }
-    bool MakeRotate = false;
-    public void Update()
-    {
-        if(!MakeRotate)
-        {
-            if(Input.GetKeyDown(KeyCode.A))
-            {
-                Fire();
-            }
-        }
-    }
-    public void Fire()
-    {
-        float x = 0f;
-        float y = 0f;
-        float z = 0;
-        float angle = 20;
-
-        for (int i = 0; i < (segments + 1); i++)
-        {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * xradius;
-            y = Mathf.Cos(Mathf.Deg2Rad * angle) * yradius;
-            PaternLr.positionCount++;
-            PaternLr.SetPosition(i, new Vector3(x, y, z));
-
-            angle += (360 / segments);
-        }
-    }
+   
    
 }
