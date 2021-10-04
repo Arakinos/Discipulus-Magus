@@ -85,16 +85,11 @@ public class GameManager : MonoBehaviour
                         jaugeScript.stabilityGauge -= 2;
                         jaugeScript.UpdateHealth();
                     }
-                    else if (minutes == 2)
+                    else if (minutes >= 2)
                     {
                         jaugeScript.stabilityGauge -= 3;
                         jaugeScript.UpdateHealth();
-                    }
-                    else if (minutes >= 3)
-                    {
-                        jaugeScript.stabilityGauge -= 5;
-                        jaugeScript.UpdateHealth();
-                    }
+                    }                    
                     else
                     {
                         jaugeScript.stabilityGauge -= 1;

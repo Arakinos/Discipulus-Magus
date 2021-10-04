@@ -6,8 +6,9 @@ using System;
 
 public class DrawRectangle : MonoBehaviour
 {
-    public GameObject jaugeGO;
+    public GameObject jaugeGO, gameManagerGO;
     public Jauge jaugeScript;
+    public GameManager gameManager;
     public AudioSource validationSon;
 
     LineRenderer line;
@@ -22,6 +23,8 @@ public class DrawRectangle : MonoBehaviour
     private void Awake()
     {
         jaugeScript = jaugeGO.GetComponent<Jauge>();
+        gameManager = gameManagerGO.GetComponent<GameManager>();
+
         line = gameObject.AddComponent<LineRenderer>();
         line.material = Alpha;
         line.positionCount = 0;
@@ -61,9 +64,18 @@ public class DrawRectangle : MonoBehaviour
                     GameObject.Find("GameManager").GetComponent<DataManager>().ChangeCurrentPatern("0");
                     GameObject.Find("GameManager").GetComponent<GameManager>().numInstability = 0;
                     GameObject.Find("GameManager").GetComponent<GameManager>().couleurSort.gameObject.GetComponent<EffectsTest>().SetNormal();
+
                     // Tracé OK
-                    jaugeScript.stabilityGauge += 1000;
-                    jaugeScript.UpdateHealth();
+                    if (gameManager.minutes >= 2)
+                    {
+                        jaugeScript.stabilityGauge += 3000;
+                        jaugeScript.UpdateHealth();
+                    }
+                    else
+                    {
+                        jaugeScript.stabilityGauge += 2000;
+                        jaugeScript.UpdateHealth();
+                    }
                     validationSon.Play();
                 }
             }
