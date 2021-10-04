@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-    GameObject menuPause;
+    GameObject menuPause, menuCredits;
     public GameObject gameManagerGo;
     public GameManager gameManagerScript;
     public AudioSource menuSon;
@@ -39,6 +39,15 @@ public class MenuManager : MonoBehaviour
         }       
     }
 
+    public void OnClickCredits()
+    {
+        if (click == false)
+        {
+            menuSon.Play();
+            StartCoroutine(DelayClickPlay());
+        }
+    }
+
     public void OnClickQuit()
     {
         if (click == false)
@@ -61,6 +70,13 @@ public class MenuManager : MonoBehaviour
         click = true;
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene("Jeu");
+    }
+    IEnumerator DelayClickCredits()
+    {
+        click = true;
+        yield return new WaitForSeconds(1);
+        menuCredits = Instantiate(Resources.Load("Prefab/Menu_Pause")) as GameObject;
+        menuCredits.transform.SetParent(GameObject.Find("Canvas").transform, false);
     }
     IEnumerator DelayClickQuit()
     {
