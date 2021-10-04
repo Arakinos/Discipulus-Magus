@@ -64,7 +64,9 @@ public class GameManager : MonoBehaviour
         if (jaugeScript.stabilityGauge != 0 && !enPause)
             timer += Time.deltaTime;
 
-        timerText.text = minutes.ToString() + " : " + secondes.ToString();
+        string timerString = string.Format("{0:0} : {1:00}", minutes, secondes);
+        timerText.text = timerString;
+        //timerText.text = minutes.ToString() + " : " + secondes.ToString();
 
         #endregion
 

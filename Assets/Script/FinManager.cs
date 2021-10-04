@@ -23,7 +23,9 @@ public class FinManager : MonoBehaviour
 
         float secondes = Mathf.FloorToInt(gameManagerScript.timer % 60);
         float minutes = Mathf.FloorToInt(gameManagerScript.timer / 60);
-        resultText.text = "You have channeled your spell \n for " + minutes.ToString() + " : " + secondes.ToString() + " long !";
+        string timerString = string.Format("{0:0} : {1:00}", minutes, secondes);
+        //resultText.text = "You have channeled your spell \n for " + minutes.ToString() + " : " + secondes.ToString() + " !";
+        resultText.text = "You have channeled your spell \n for " + timerString + " !";
     }
 
     // Update is called once per frame
