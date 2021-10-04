@@ -14,14 +14,14 @@ public class GameManager : MonoBehaviour
     public Jauge jaugeScript;
     public int tempsApparitionInstability;
     public bool enPause;
-    public AudioSource sortSon;
+    public AudioSource sortSon, musique;
     public bool sortSonOn;
 
     public GameObject sortGO;
     public SpriteRenderer couleurSort;
 
     GameObject menuFin;
-    bool fin;
+    public bool fin, debut;
 
     // Start is called before the first frame update
     void Start()
@@ -37,115 +37,149 @@ public class GameManager : MonoBehaviour
         enPause = false;
         couleurSort = sortGO.GetComponent<SpriteRenderer>();
         fin = false;
+        debut = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (enPause == true || fin == true)
+        if (debut == true)
         {
-            sortSon.Stop();
-            sortSonOn = false;
-        }
-        else
-        {
-            if (sortSonOn == false)
+
+
+
+            if (enPause == true || fin == true)
             {
-                sortSon.Play();
-                sortSonOn = true;
-            }
-        }
-
-        #region Timer
-
-        float secondes = Mathf.FloorToInt(timer % 60);
-        float minutes = Mathf.FloorToInt(timer / 60);
-
-        if (jaugeScript.stabilityGauge != 0 && !enPause)
-            timer += Time.deltaTime;
-
-        string timerString = string.Format("{0:0} : {1:00}", minutes, secondes);
-        timerText.text = timerString;
-        //timerText.text = minutes.ToString() + " : " + secondes.ToString();
-
-        #endregion
-
-        if (numInstability != 0)
-        {
-            if (enPause == false)
-            {
-                jaugeScript.stabilityGauge -= 1;
-                jaugeScript.UpdateHealth();
-            }
-        }
-        else
-        {
-            if (tempsApparitionInstability < 1000)
-            {
-                if(enPause == false)
-                    tempsApparitionInstability += 1;
+                sortSon.Stop();
+                sortSonOn = false;
             }
             else
             {
-                ApparitionInstability();
-                tempsApparitionInstability = 0;
+                if (sortSonOn == false)
+                {
+                    sortSon.Play();
+                    sortSonOn = true;
+                }
             }
-        }
 
-        #region Instabilitées du sort
+            #region Timer
 
-        if (numInstability == 0)
-        {
-            //couleurSort.color = new Color(255, 255, 255, 255);
-            sortSon.volume = 0.15f;
-        }
-        if (numInstability == 1)
-        {
-            // couleurSort.color = new Color(255, 0, 0, 255);
-            sortSon.volume = 0.75f;
-        }
-        if (numInstability == 2)
-        {
-            // couleurSort.color = new Color(0, 0, 255, 255);
-            sortSon.volume = 0.75f;
-        }
-        if (numInstability == 3)
-        {
-            // couleurSort.color = new Color(0, 255, 0, 255);
-            sortSon.volume = 0.75f;
-        }
-        if (numInstability == 4)
-        {
-            //couleurSort.color = new Color(255, 255, 0, 255);
-            sortSon.volume = 0.75f;
-        }
-        if (numInstability == 5)
-        {
-            //couleurSort.color = new Color(155, 0, 255, 255);
-            sortSon.volume = 0.75f;
-        }
-        if (numInstability == 6)
-        {
-            // couleurSort.color = new Color(0, 0, 0, 255);
-            sortSon.volume = 0.75f;
-        }
+            float secondes = Mathf.FloorToInt(timer % 60);
+            float minutes = Mathf.FloorToInt(timer / 60);
 
-        #endregion
+            if (jaugeScript.stabilityGauge != 0 && !enPause)
+                timer += Time.deltaTime;
 
-        if (jaugeScript.stabilityGauge <= 6000)
-        {
-            mainGaucheAnimator.SetBool("Tremblement", true);
-            mainDroiteAnimator.SetBool("Tremblement", true);
-        }
+            string timerString = string.Format("{0:0} : {1:00}", minutes, secondes);
+            timerText.text = timerString;
+            //timerText.text = minutes.ToString() + " : " + secondes.ToString();
 
-        if (jaugeScript.stabilityGauge == 0)
-        {
-            // Quand FIN du jeu 
-            if (fin == false)
+            #endregion
+
+            if (numInstability != 0)
             {
-                menuFin = Instantiate(Resources.Load("Prefab/Menu_Fin")) as GameObject;
-                menuFin.transform.SetParent(GameObject.Find("Canvas").transform, false);
-                fin = true;
+                if (enPause == false)
+                {
+                    if (minutes == 1)
+                    {
+                        jaugeScript.stabilityGauge -= 2;
+                        jaugeScript.UpdateHealth();
+                    }
+                    else if (minutes == 2)
+                    {
+                        jaugeScript.stabilityGauge -= 3;
+                        jaugeScript.UpdateHealth();
+                    }
+                    else if (minutes >= 3)
+                    {
+                        jaugeScript.stabilityGauge -= 5;
+                        jaugeScript.UpdateHealth();
+                    }
+                    else
+                    {
+                        jaugeScript.stabilityGauge -= 1;
+                        jaugeScript.UpdateHealth();
+                    }
+                }
+            }
+            else
+            {
+                if (tempsApparitionInstability < 1000)
+                {
+                    if (enPause == false)
+                        tempsApparitionInstability += 1;
+                }
+                else
+                {
+                    ApparitionInstability();
+                    tempsApparitionInstability = 0;
+                }
+            }
+
+            #region Instabilitées du sort
+
+            if (numInstability == 0)
+            {
+                //couleurSort.color = new Color(255, 255, 255, 255);
+                sortSon.volume = 0.10f;
+                musique.volume = 0.50f;
+            }
+            if (numInstability == 1)
+            {
+                // couleurSort.color = new Color(255, 0, 0, 255);
+                sortSon.volume = 0.20f;
+                musique.volume = 0.25f;
+            }
+            if (numInstability == 2)
+            {
+                // couleurSort.color = new Color(0, 0, 255, 255);
+                sortSon.volume = 0.20f;
+                musique.volume = 0.25f;
+            }
+            if (numInstability == 3)
+            {
+                // couleurSort.color = new Color(0, 255, 0, 255);
+                sortSon.volume = 0.20f;
+                musique.volume = 0.25f;
+            }
+            if (numInstability == 4)
+            {
+                //couleurSort.color = new Color(255, 255, 0, 255);
+                sortSon.volume = 0.20f;
+                musique.volume = 0.25f;
+            }
+            if (numInstability == 5)
+            {
+                //couleurSort.color = new Color(155, 0, 255, 255);
+                sortSon.volume = 0.20f;
+                musique.volume = 0.25f;
+            }
+            if (numInstability == 6)
+            {
+                // couleurSort.color = new Color(0, 0, 0, 255);
+                sortSon.volume = 0.20f;
+                musique.volume = 0.25f;
+            }
+
+            #endregion
+
+            if (jaugeScript.stabilityGauge <= 6000)
+            {
+                mainGaucheAnimator.SetBool("Tremblement", true);
+                mainDroiteAnimator.SetBool("Tremblement", true);
+            }
+
+            if (jaugeScript.stabilityGauge == 0)
+            {
+                // Quand FIN du jeu 
+                if (fin == false)
+                {
+
+                    menuFin = Instantiate(Resources.Load("Prefab/Menu_Fin")) as GameObject;
+                    menuFin.transform.SetParent(GameObject.Find("Canvas").transform, false);
+                    numInstability = 0;
+                    fin = true;
+                }
             }
         }
     }

@@ -6,6 +6,10 @@ using System;
 
 public class DrawRectangle : MonoBehaviour
 {
+    public GameObject jaugeGO;
+    public Jauge jaugeScript;
+    public AudioSource validationSon;
+
     LineRenderer line;
     private bool IsPlayerDrawing;
     List<Vector3> pointsList = new List<Vector3>();
@@ -17,6 +21,7 @@ public class DrawRectangle : MonoBehaviour
     int AllIsNotGood = 0;
     private void Awake()
     {
+        jaugeScript = jaugeGO.GetComponent<Jauge>();
         line = gameObject.AddComponent<LineRenderer>();
         line.material = Alpha;
         line.positionCount = 0;
@@ -56,6 +61,10 @@ public class DrawRectangle : MonoBehaviour
                     GameObject.Find("GameManager").GetComponent<DataManager>().ChangeCurrentPatern("0");
                     GameObject.Find("GameManager").GetComponent<GameManager>().numInstability = 0;
                     GameObject.Find("GameManager").GetComponent<GameManager>().couleurSort.gameObject.GetComponent<EffectsTest>().SetNormal();
+                    // Tracé OK
+                    jaugeScript.stabilityGauge += 1000;
+                    jaugeScript.UpdateHealth();
+                    validationSon.Play();
                 }
             }
             catch
