@@ -8,15 +8,20 @@ public class MenuManager : MonoBehaviour
     GameObject menuPause;
     public GameObject gameManagerGo;
     public GameManager gameManagerScript;
+    public AudioSource menuSon;
+    public bool click;
 
     // Start is called before the first frame update
     void Start()
     {
+        click = false;
         Scene currentScene = SceneManager.GetActiveScene();
         string sceneName = currentScene.name;
-
+       
         if (sceneName == "Jeu")
+        {
             gameManagerScript = gameManagerGo.GetComponent<GameManager>();
+        }       
     }
 
     // Update is called once per frame
@@ -27,18 +32,40 @@ public class MenuManager : MonoBehaviour
 
     public void OnClickPlay()
     {
-        SceneManager.LoadScene("Jeu");
+        if (click == false)
+        {
+            menuSon.Play();
+            StartCoroutine(DelayClickPlay());
+        }       
     }
 
     public void OnClickQuit()
     {
-       Application.Quit();
+        if (click == false)
+        {
+            menuSon.Play();
+            StartCoroutine(DelayClickQuit());
+        }
     }
 
     public void OnClickOption()
     {
+        menuSon.Play();
         gameManagerScript.enPause = true;
         menuPause = Instantiate(Resources.Load("Prefab/Menu_Pause")) as GameObject;
-        menuPause.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        menuPause.transform.SetParent(GameObject.Find("Canvas").transform, false);       
+    }
+
+    IEnumerator DelayClickPlay()
+    {
+        click = true;
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("Jeu");
+    }
+    IEnumerator DelayClickQuit()
+    {
+        click = true;
+        yield return new WaitForSeconds(1);
+        Application.Quit();
     }
 }

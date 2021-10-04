@@ -14,8 +14,8 @@ public class Jauge : MonoBehaviour
     void Start()
     {
         gauge = GetComponent<Image>();
-        stabilityGaugeMax = 25000;
-        stabilityGauge = 25000;
+        stabilityGaugeMax = 24000;
+        stabilityGauge = 24000;
     }
     
     public void UpdateHealth()

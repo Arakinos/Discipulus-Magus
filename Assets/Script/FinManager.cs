@@ -10,12 +10,16 @@ public class FinManager : MonoBehaviour
     public GameManager gameManagerScript;
     public float minutes, secondes;
     public Text resultText;
+    public AudioSource menuSon;
+    public bool click;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManagerGo = GameObject.Find("GameManager");
         gameManagerScript = gameManagerGo.GetComponent<GameManager>();
+
+        click = false;
 
         float secondes = Mathf.FloorToInt(gameManagerScript.timer % 60);
         float minutes = Mathf.FloorToInt(gameManagerScript.timer / 60);
@@ -30,6 +34,17 @@ public class FinManager : MonoBehaviour
 
     public void OnClickMainMenu()
     {
+        if (click == false)
+        {
+            menuSon.Play();
+            StartCoroutine(DelayClickMainMenu());
+        }
+    }
+
+    IEnumerator DelayClickMainMenu()
+    {
+        click = true;
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene("Menu");
     }
 }
