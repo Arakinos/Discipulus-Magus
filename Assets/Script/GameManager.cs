@@ -96,37 +96,37 @@ public class GameManager : MonoBehaviour
 
         if (numInstability == 0)
         {
-            couleurSort.color = new Color(255, 255, 255, 255);
+            //couleurSort.color = new Color(255, 255, 255, 255);
             sortSon.volume = 0.15f;
         }
         if (numInstability == 1)
         {
-            couleurSort.color = new Color(255, 0, 0, 255);
+            // couleurSort.color = new Color(255, 0, 0, 255);
             sortSon.volume = 0.75f;
         }
         if (numInstability == 2)
         {
-            couleurSort.color = new Color(0, 0, 255, 255);
+            // couleurSort.color = new Color(0, 0, 255, 255);
             sortSon.volume = 0.75f;
         }
         if (numInstability == 3)
         {
-            couleurSort.color = new Color(0, 255, 0, 255);
+            // couleurSort.color = new Color(0, 255, 0, 255);
             sortSon.volume = 0.75f;
         }
         if (numInstability == 4)
         {
-            couleurSort.color = new Color(255, 255, 0, 255);
+            //couleurSort.color = new Color(255, 255, 0, 255);
             sortSon.volume = 0.75f;
         }
         if (numInstability == 5)
         {
-            couleurSort.color = new Color(155, 0, 255, 255);
+            //couleurSort.color = new Color(155, 0, 255, 255);
             sortSon.volume = 0.75f;
         }
         if (numInstability == 6)
         {
-            couleurSort.color = new Color(0, 0, 0, 255);
+            // couleurSort.color = new Color(0, 0, 0, 255);
             sortSon.volume = 0.75f;
         }
 
@@ -153,6 +153,10 @@ public class GameManager : MonoBehaviour
     void ApparitionInstability()
     {
         numInstability = Random.Range(1, 7);
+        if (numInstability != 0)
+        {
+            couleurSort.gameObject.GetComponent<EffectsTest>().SwapColor(numInstability);
+        }
         GameObject.Find("GameManager").GetComponent<DataManager>().ChangeCurrentPatern(numInstability.ToString());
     }
 }

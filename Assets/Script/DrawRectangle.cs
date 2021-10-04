@@ -55,6 +55,7 @@ public class DrawRectangle : MonoBehaviour
                 {
                     GameObject.Find("GameManager").GetComponent<DataManager>().ChangeCurrentPatern("0");
                     GameObject.Find("GameManager").GetComponent<GameManager>().numInstability = 0;
+                    GameObject.Find("GameManager").GetComponent<GameManager>().couleurSort.gameObject.GetComponent<EffectsTest>().SetNormal();
                 }
             }
             catch

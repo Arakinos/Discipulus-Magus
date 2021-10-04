@@ -10,6 +10,7 @@ public class EffectsTest : MonoBehaviour
 {
 
     public Renderer Orb;
+    public SpriteRenderer Heart;
     int colortype = 0;
     public Animation Idle;
 
@@ -21,11 +22,16 @@ public class EffectsTest : MonoBehaviour
     public ParticleSystem Disruptive;
     public ParticleSystem Stars;
     public ParticleSystem Chocs;
+    public ParticleSystem Poison;
+    public ParticleSystem Smoke;
+    public ParticleSystem.MainModule MainWaves;
+    public ParticleSystem.MainModule MainPoints;
 
     // Start is called before the first frame update
     void Start()
     {
         Orb = GetComponent<Renderer>();
+      
         Idle = gameObject.GetComponent<Animation>();
 
         foreach(ChildrenName name in gameObject.GetComponentsInChildren<ChildrenName>())
@@ -51,79 +57,56 @@ public class EffectsTest : MonoBehaviour
     void Update()
     {
 
-        var MainWawes = Waves.main;
-        var MainPoints = point.main;
-        #region Colortype
-        if (colortype == 0)
-        {
-            Orb.material.color = Color.white;
-            //Orb.material.color = new Color(255, 0, 0);
-        }
-        else if (colortype == 1)
-        {
-            Orb.material.color = Color.green;
-            MainWawes.startColor = new Color(0, 1, 0,0.5f);
-            
-        }
-        else if (colortype == 2)
-        {
-            Orb.material.color = Color.magenta;
-            MainWawes.startColor = new Color(1, 0, 1, 0.2f);
-        }
-        else if (colortype == 3)
-        {
-            Orb.material.color = Color.cyan;
-            MainWawes.startColor = new Color(0, 1, 1, 0.5f);
-        }
-        else if (colortype == 4)
-        {
-            Orb.material.color = Color.red;
-            MainWawes.startColor = new Color(1, 0, 0, 0.5f);
-        }
-        else if (colortype == 5)
-        {
-            Orb.material.color = Color.yellow;
-            MainWawes.startColor = new Color(0.8f, 0.8f, 0, 0.5f) ;
-        }
-        else if (colortype == 6)
-        {
-            Orb.material.color = Color.blue;
-            MainWawes.startColor = new Color(0, 0, 1, 0.5f);
-        }
-        #endregion
-
     }
 
-    public void SwapColor()
+    public void SwapColor(int Value)
     {
-
-        colortype += Random.Range(1, 7);
+        MainWaves = Waves.main;
+        MainPoints = point.main;
         Stable.gameObject.SetActive(false);
         Magic.gameObject.SetActive(true);
-        if (colortype == 1)
+
+        if (Value == 1)
         {
-
-
+            Orb.material.color = Color.green;
+            MainWaves.startColor = new Color(0, 1, 0, 0.5f);
+            Heart.color = hexColor(20, 3, 19, 248);
+            Poison.gameObject.SetActive(true);
         }
-        else if (colortype == 2)
+        else if (Value == 2)
         {
+            Orb.material.color = Color.magenta;
+            MainWaves.startColor = new Color(1, 0, 1, 0.2f);
+            Heart.color = hexColor(20, 3, 19, 248);
             Disruptive.gameObject.SetActive(true);
         }
-        else if (colortype == 3)
+        else if (Value == 3)
         {
+            Orb.material.color = Color.cyan;
+            MainWaves.startColor = new Color(0, 1, 1, 0.5f);
+            Heart.color = hexColor(20, 3, 19, 248);
             Elec.gameObject.SetActive(true);
         }
-        else if (colortype == 4)
+        else if (Value == 4)
         {
+            Orb.material.color = Color.red;
+            MainWaves.startColor = new Color(1, 0, 0, 0.5f);
+            Heart.color = hexColor(20, 3, 19, 248);
             Chocs.gameObject.SetActive(true);
         }
-        else if (colortype == 5)
+        else if (Value == 5)
         {
+            Orb.material.color = Color.yellow;
+            MainWaves.startColor = new Color(0.8f, 0.8f, 0, 0.5f);
+            Heart.color = hexColor(20, 3, 19, 248);
             Stars.gameObject.SetActive(true);
         }
-        else if (colortype == 6)
+        else if (Value == 6)
         {
-
+            Orb.material.color = Color.blue;
+            MainWaves.startColor = new Color(0, 0, 1, 0.5f);
+            Heart.color = hexColor(20, 3, 19, 248);
+            Smoke.gameObject.SetActive(true);
         }
 
     }
@@ -131,11 +114,20 @@ public class EffectsTest : MonoBehaviour
     public void SetNormal()
     {
         colortype = 0;
+        Orb.material.color = Color.white;
+        Heart.color = hexColor(255, 255, 255, 248);
         Stable.gameObject.SetActive(true); 
         Elec.gameObject.SetActive(false);
         Magic.gameObject.SetActive(false);
         Disruptive.gameObject.SetActive(false);
         Stars.gameObject.SetActive(false);
         Chocs.gameObject.SetActive(false);
+        Poison.gameObject.SetActive(false);
+        Smoke.gameObject.SetActive(false);
+    }
+    public static Vector4 hexColor(float r, float g, float b, float a)
+    {
+        Vector4 color = new Vector4(r / 255, g / 255, b / 255, a / 255);
+        return color;
     }
 }
