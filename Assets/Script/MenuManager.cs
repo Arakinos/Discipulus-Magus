@@ -44,7 +44,7 @@ public class MenuManager : MonoBehaviour
         if (click == false)
         {
             menuSon.Play();
-            StartCoroutine(DelayClickPlay());
+            StartCoroutine(DelayClickCredits());
         }
     }
 
@@ -75,8 +75,9 @@ public class MenuManager : MonoBehaviour
     {
         click = true;
         yield return new WaitForSeconds(1);
-        menuCredits = Instantiate(Resources.Load("Prefab/Menu_Pause")) as GameObject;
+        menuCredits = Instantiate(Resources.Load("Prefab/Menu_Credits")) as GameObject;
         menuCredits.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        click = false;
     }
     IEnumerator DelayClickQuit()
     {
