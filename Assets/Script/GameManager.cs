@@ -82,24 +82,24 @@ public class GameManager : MonoBehaviour
                 {
                     if (minutes == 1)
                     {
-                        jaugeScript.stabilityGauge -= 2;
+                        jaugeScript.stabilityGauge -= 4;
                         jaugeScript.UpdateHealth();
                     }
                     else if (minutes >= 2)
                     {
-                        jaugeScript.stabilityGauge -= 3;
+                        jaugeScript.stabilityGauge -= 6;
                         jaugeScript.UpdateHealth();
                     }                    
                     else
                     {
-                        jaugeScript.stabilityGauge -= 1;
+                        jaugeScript.stabilityGauge -= 2;
                         jaugeScript.UpdateHealth();
                     }
                 }
             }
             else
             {
-                if (tempsApparitionInstability < 1000)
+                if (tempsApparitionInstability < 500)
                 {
                     if (enPause == false)
                         tempsApparitionInstability += 1;
