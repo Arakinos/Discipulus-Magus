@@ -21,8 +21,13 @@ public class DataManager : MonoBehaviour
         gm = new GameObject();
         ec = gm.AddComponent<MeshCollider>();
         PaternLr = gm.AddComponent<LineRenderer>();
+        paternDic.Clear();
         DataSet();
+        PaternLr.sortingOrder = 1;
         PaternLr.startWidth = 1f;
+        PaternLr.numCapVertices = 20;
+        PaternLr.numCornerVertices = 20;
+        PaternLr.positionCount = 0;
         PaternLr.endWidth = 1f;
         PaternLr.material = Material;
         //ChangeCurrentPatern("1");
@@ -38,20 +43,8 @@ public class DataManager : MonoBehaviour
     public void ChangeCurrentPatern(string PaternName)
     {
         int i = 0;
-        if (PaternName == "2" || PaternName == "5" || PaternName == "6")
+        if (PaternName != "0")
         {
-            PaternLr.numCornerVertices = 20;
-            foreach (Vector3 vector in paternDic[PaternName].Alpha)
-            {
-
-                PaternLr.positionCount = i + 1;
-                PaternLr.SetPosition(i, vector);
-                i++;
-            }
-        }
-        else if (PaternName != "0")
-        {
-
             foreach (Vector3 vector in paternDic[PaternName].Alpha)
                 {
 
@@ -60,12 +53,10 @@ public class DataManager : MonoBehaviour
                     i++;
                 }
 
-            PaternLr.numCornerVertices = 0;
 
         }
         else 
         {
-            PaternLr.numCornerVertices = 0;
             PaternLr.positionCount = 0;
             currentPatern = PaternName;
             return;
@@ -85,7 +76,7 @@ public class DataManager : MonoBehaviour
         Alpha.Add(new Vector3(3.5f, 0, 0));
         Alpha.Add(new Vector3(-1f, -4f, 0));
         Alpha1.Alpha = Alpha;
-        Alpha1.minimumlenght = 550;
+        Alpha1.minimumlenght = 450;
         paternDic.Add("1", Alpha1);
         #endregion
         patern Alpha2 = new patern();
@@ -97,7 +88,7 @@ public class DataManager : MonoBehaviour
         AlphaB.Add(new Vector3(3f, 4f, 0));
         AlphaB.Add(new Vector3(5f, -2f, 0));
         Alpha2.Alpha = AlphaB;
-        Alpha2.minimumlenght = 550;
+        Alpha2.minimumlenght = 500;
         paternDic.Add("2", Alpha2);
         #endregion
         #region Alpha3
@@ -105,8 +96,8 @@ public class DataManager : MonoBehaviour
         List<Vector3> AlphaC = new List<Vector3>();
         AlphaC.Add(new Vector3(0f, -4f, 0));
         AlphaC.Add(new Vector3(0f, 3.5f, 0));
-        AlphaC.Add(new Vector3(4.5f, -0.5f, 0));
-        AlphaC.Add(new Vector3(-4f, -0.5f, 0));
+        AlphaC.Add(new Vector3(4.5f, -0.75f, 0));
+        AlphaC.Add(new Vector3(-3.5f, -0.75f, 0));
         Alpha3.Alpha = AlphaC;
         Alpha3.minimumlenght = 550;
         paternDic.Add("3", Alpha3);
@@ -121,7 +112,7 @@ public class DataManager : MonoBehaviour
         AlphaD.Add(new Vector3(-3f, -3f, 0));
         AlphaD.Add(new Vector3(0f, 0f, 0));
         Alpha4.Alpha = AlphaD;
-        Alpha4.minimumlenght = 550;
+        Alpha4.minimumlenght = 500;
         paternDic.Add("4", Alpha4);
         #endregion
         #region Alpha5

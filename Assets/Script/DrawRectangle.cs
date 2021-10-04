@@ -22,8 +22,9 @@ public class DrawRectangle : MonoBehaviour
         line.positionCount = 0;
         line.startWidth = 0.1f;
         line.endWidth = 0.1f;
-        line.startColor = Color.green;
-        line.endColor = Color.green;
+        line.sortingOrder = 2;
+        line.startColor = Color.white;
+        line.endColor = Color.white;
     }
     
     private void Update()
