@@ -55,7 +55,7 @@ public class DrawRectangle : MonoBehaviour
                 {
                     diff = DifferenceBetweenLines(pointsList.ToArray(), DataManager.paternDic[DataManager.currentPatern].Alpha.ToArray());
                 }
-                const float threshold = 1f;
+                const float threshold = 1.5f;
                 if(diff<threshold)
                 {
                     GameObject.Find("GameManager").GetComponent<DataManager>().ChangeCurrentPatern("0");
@@ -131,7 +131,7 @@ public class DrawRectangle : MonoBehaviour
     private bool IsGood(int isnotgood, int isgood)
     {
         float tempo = isnotgood + isgood;
-        if (tempo < 100)
+        if (tempo < 80)
         {
             Debug.Log(AllIsGood + " < " + tempo * 80);
             Debug.Log("false");
