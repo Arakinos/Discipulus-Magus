@@ -76,7 +76,7 @@ public class DataManager : MonoBehaviour
         Alpha.Add(new Vector3(3.5f, 0, 0));
         Alpha.Add(new Vector3(-1f, -4f, 0));
         Alpha1.Alpha = Alpha;
-        Alpha1.minimumlenght = 450;
+        Alpha1.minimumlenght = 350;
         paternDic.Add("1", Alpha1);
         #endregion
         patern Alpha2 = new patern();
@@ -88,7 +88,7 @@ public class DataManager : MonoBehaviour
         AlphaB.Add(new Vector3(3f, 4f, 0));
         AlphaB.Add(new Vector3(5f, -2f, 0));
         Alpha2.Alpha = AlphaB;
-        Alpha2.minimumlenght = 500;
+        Alpha2.minimumlenght = 450;
         paternDic.Add("2", Alpha2);
         #endregion
         #region Alpha3
@@ -112,7 +112,7 @@ public class DataManager : MonoBehaviour
         AlphaD.Add(new Vector3(-3f, -3f, 0));
         AlphaD.Add(new Vector3(0f, 0f, 0));
         Alpha4.Alpha = AlphaD;
-        Alpha4.minimumlenght = 500;
+        Alpha4.minimumlenght = 450;
         paternDic.Add("4", Alpha4);
         #endregion
         #region Alpha5
